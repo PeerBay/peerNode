@@ -17,7 +17,7 @@ sitelist={}
 urls = (
 '^/get/?(.*)$','Proxy'
 )
-
+#start privoxy service privoxy restart
 proxy = urllib2.ProxyHandler({'http': '127.0.0.1:8118'})
 opener = urllib2.build_opener(proxy)
 urllib2.install_opener(opener)
