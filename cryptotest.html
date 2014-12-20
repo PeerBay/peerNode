@@ -1,0 +1,36 @@
+
+<html>
+
+<head></head>
+<body>
+
+
+
+<script src="https://raw.githubusercontent.com/tonyg/js-nacl/master/lib/nacl_factory.js"></script>
+<script>
+  var nacl = nacl_factory.instantiate();
+
+function create_keys(password){
+	password = nacl.crypto_hash_string(password).subarray(0, 32);
+	return skp = nacl.crypto_sign_keypair_from_seed(password)
+}
+function encrypt_with_secret_key(msg,secret_key){
+	m = nacl.encode_utf8(msg);
+	return nacl.crypto_sign(m, secret_key);
+}
+function decrypt_with_public_key(crypt_msg,public_key){
+	m1 = nacl.crypto_sign_open(crypt_msg,public_key);
+	return nacl.decode_utf8(m1);
+}
+keys=create_keys("password")
+public_key=keys.signPk
+secret_key=keys.signSk
+message="this is my message to the world"
+crypt_msg=encrypt_with_secret_key(message,secret_key)
+console.log(crypt_msg)
+msg=decrypt_with_public_key(crypt_msg,public_key)
+console.log(msg)
+</script>
+
+</body>
+</html>
