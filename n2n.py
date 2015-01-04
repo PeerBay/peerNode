@@ -3,9 +3,18 @@
 #~ def stopTunnel(pid):
 	#~ 
 #~ def saveTunnel(pid=None,to=None,password=None,Network=None):	
+
+#~ two default edges on local supernode 
+#~ The one with publicedge with an ip based on the domain name 
+#~ default anonymous domain uuid4.random
+#~ the other one is private protected with a password that changes 
+#~ every half an hour and is distributed among the peers
+#~ other public and private edges are created to reach other supernodes
+
 import subprocess
 import couchdb
 import json
+import miniupnpc
 server=couchdb.Server()
 n2n_state=server["n2n"]
 try:
@@ -16,9 +25,19 @@ except:
 	with open("edges","wb") as f:
 		f.write(json.dumps({}))
 		f.close()
+#~ class remoteSupernode:
+		#~ If upnp doesnt work and ports are blocked the user must
+		#~ either find a friend's node(upnp capable) and host their domain
+		#~ or use a public supernode that accepts domain hosting
+		#~ either way a public and a private edge are required to the supernode's
+		#~ address based on the domain name
+		def requestSupernodeForDns(supernode):
+		def edges(supernode):
+			publicedge(domain,supernode)
+			gateway=n2n.gateway(supernode)
+			edge(domain,password,supernode)
 class Supernode:
 	def init(self):
-		import miniupnpc
 		u = miniupnpc.UPnP()
 		u.discoverdelay = 200;
 		ndevices = u.discover()
