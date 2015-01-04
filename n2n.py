@@ -1,8 +1,3 @@
-#~ def startTunnel(to=None,password=None,Network=None):
-	#~ 
-#~ def stopTunnel(pid):
-	#~ 
-#~ def saveTunnel(pid=None,to=None,password=None,Network=None):	
 
 #~ two default edges on local supernode 
 #~ The one with publicedge with an ip based on the domain name 
@@ -10,6 +5,10 @@
 #~ the other one is private protected with a password that changes 
 #~ every half an hour and is distributed among the peers
 #~ other public and private edges are created to reach other supernodes
+
+
+
+#~IDEA: To n2n source code: add code that will return the subnet of the network on register and will use it to generate an local IP address
 
 import subprocess
 import couchdb
@@ -31,6 +30,8 @@ except:
 		#~ or use a public supernode that accepts domain hosting
 		#~ either way a public and a private edge are required to the supernode's
 		#~ address based on the domain name
+		#~ when this happens the remotesupernode must announce with kadnode the requested domain name 
+		#~ and the local node must start a public edge to the remote supernode with the domain name as network name.
 		def requestSupernodeForDns(supernode):
 		def edges(supernode):
 			publicedge(domain,supernode)
@@ -57,7 +58,8 @@ class Supernode:
 	def start(self,port=None):
 		self.init()
 		if self.noUPnP==False:
-			return "Can't start supernode because UPnP is disabled."
+			return "Can't start supernode because UPnP is disabled. Try remoteSupernode"
+			
 		self.stop()
 		u=self.u
 		if port!=None:
@@ -145,7 +147,8 @@ class Supernode:
 		#~ to connect to the supernode's public network we derive the ip address of the public edge from the hash of the p2p domain.  
 		#~ Connecting here users will be able to leave a friend request with "how to get in touch" data. 
 		#~ on friend request put (supernode p2p address , network name,net password , username , public key, message, sign )encrypted
-		
+		#~ public edge generates the domain name into an subnet and a network name( tun name is handled by n2n library)
+
 #~edge -d n2n0 -c mynetwork -k encryptme -a 1.2.3.4 -l a.b.c.d:xyw 
 class Edge(Supernode):
 	def __init__(self,Supernode):
